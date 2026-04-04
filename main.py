@@ -66,21 +66,5 @@ def health_check(db: Session = Depends(get_db)):
         "api_status": "ok",
         "db_status": db_status
     }
-# endpoint de get de validacion de credenciales de usuarios
-@app.get("/login", tags=["Autenticación"])
-def login_get(email: str, password: str, db: Session = Depends(get_db)):
-    from services import auth_service
-    user = auth_service.authenticate_user(email, password, db)
+
     
-    if not user:
-        return {"status": "error", "mensaje": "Credenciales incorrectas"}
-        
-    return {
-        "status": "success",
-        "mensaje": "Válido",
-        "datos": {
-            "id": user.id,
-            "nombre": user.nombre,
-            "email": user.email
-        }
-    }

@@ -104,3 +104,79 @@ python seed.py
 Esta herramienta poblará la base de datos automáticamente con:
 - Empresa *Mock*: **06140101801234**
 - Usuario Test: **admin@creapx.com** // Pass: **admin123**
+
+---
+
+## 📡 Uso de la API y Ejemplos de Peticiones
+
+La API se ejecuta localmente usando la URL base: `http://127.0.0.1:8000` (o el puerto que asigne uvicorn). A continuación se muestran ejemplos prácticos de cómo consumir los endpoints utilizando métodos HTTP, como por ejemplo desde React usando `fetch`.
+
+### 1. Petición POST (Ejemplo: Iniciar Sesión)
+El método **POST** se usa para *enviar información* al servidor (para crear recursos o autenticarse). Los datos suelen ir empaquetados en un Body (cuerpo) JSON.
+
+**Router:** `/auth/login` (Definido en `auth.py`)
+
+**Ejemplo con `fetch` en JavaScript:**
+```javascript
+fetch("http://127.0.0.1:8000/auth/login", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify({
+    email: "admin@creapx.com",
+    password: "admin123"
+  })
+})
+.then(response => response.json())
+.then(data => console.log("Token JWT recibido:", data))
+.catch(error => console.error("Error:", error));
+```
+
+*(Nota: Enviar credenciales como POST Body es lo ideal en lugar de pasarlos por Query Params)*.
+
+### 2. Petición GET (Ejemplo: Obtener Listado de Empresas)
+El método **GET** se emplea para *solicitar y leer* información del servidor.
+
+**Router:** `/empresas/` (Definido en `empresa.py`)
+
+**Ejemplo con `fetch` en JavaScript:**
+```javascript
+fetch("http://127.0.0.1:8000/empresas/", {
+  method: "GET",
+  headers: {
+    "Content-Type": "application/json"
+    // "Authorization": "Bearer TU_TOKEN_AQUI" // Agregarlo si la ruta requiere estar autenticado
+  }
+})
+.then(response => response.json())
+.then(data => console.log("Lista de empresas:", data))
+.catch(error => console.error("Error:", error));
+```
+
+### 3. Petición DELETE (Ejemplo Formativo)
+El método **DELETE** se utiliza para *eliminar un recurso* específico del sistema.
+*(Nota temporal: Los routers como `empresa.py` o `users.py` actualmente solo tienen endpoints POST y GET, pero la estructura recomendada para un DELETE futuro es la siguiente):*
+
+**Router:** `/empresas/{id}` -> Ej: `/empresas/1`
+
+**Ejemplo con `fetch` en JavaScript:**
+```javascript
+fetch("http://127.0.0.1:8000/empresas/1", {
+  method: "DELETE",
+  headers: {
+    "Content-Type": "application/json",
+    "Authorization": "Bearer TU_TOKEN_AQUI" // Rutas destructivas DEBEN ser protegidas
+  }
+})
+.then(response => {
+    if(response.ok) {
+        console.log("Empresa ID 1 eliminada correctamente");
+    }
+})
+.catch(error => console.error("Error:", error));
+```
+#activar el ambiente local
+venv\Scripts\activate
+#ejecutar el servidor
+uvicorn main:app --reload
