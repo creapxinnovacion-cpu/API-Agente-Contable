@@ -28,6 +28,7 @@ from fastapi.middleware.cors import CORSMiddleware
 origins = [
     "http://localhost:5173", # Vite por defecto
     "http://127.0.0.1:5173",
+    "https://agente-contable-2l4b.vercel.app", # Vercel deployment
 ]
 
 app.add_middleware(
