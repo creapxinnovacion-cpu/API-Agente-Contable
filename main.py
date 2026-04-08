@@ -8,7 +8,7 @@ import models.user
 import models.empresa
 import models.usuario_empresa
 
-from routers import auth, users, empresa
+from routers import auth, users, empresa, usuario_empresa
 
 # Crear las tablas en la base de datos (si no existen)
 Base.metadata.create_all(bind=engine)
@@ -42,6 +42,7 @@ app.add_middleware(
 app.include_router(auth.router)
 app.include_router(users.router)
 app.include_router(empresa.router)
+app.include_router(usuario_empresa.router)
 
 @app.get("/", tags=["Inicio"])
 def read_root():

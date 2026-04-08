@@ -12,3 +12,23 @@ def create_empresa(db: Session, empresa: EmpresaCreate):
 
 def get_empresas(db: Session, skip: int = 0, limit: int = 100):
     return db.query(Empresa).offset(skip).limit(limit).all()
+
+def get_empresa(db: Session, empresa_id: int):
+    return db.query(Empresa).filter(Empresa.id == empresa_id).first()
+
+def update_empresa(db: Session, empresa_id: int, empresa_data: dict):
+    db_empresa = get_empresa(db, empresa_id)
+    if db_empresa:
+        for key, value in empresa_data.items():
+            if value is not None:
+                setattr(db_empresa, key, value)
+        db.commit()
+        db.refresh(db_empresa)
+    return db_empresa
+
+def delete_empresa(db: Session, empresa_id: int):
+    db_empresa = get_empresa(db, empresa_id)
+    if db_empresa:
+        db.delete(db_empresa)
+        db.commit()
+    return db_empresa

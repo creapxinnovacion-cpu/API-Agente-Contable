@@ -10,6 +10,12 @@ class EmpresaBase(BaseModel):
 class EmpresaCreate(EmpresaBase):
     pass
 
+class EmpresaUpdate(BaseModel):
+    nit: Optional[str] = None
+    nombre_razon_social: Optional[str] = None
+    correo: Optional[str] = None
+    estado: Optional[str] = None
+
 class EmpresaResponse(EmpresaBase):
     id: int
 
