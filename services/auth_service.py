@@ -36,3 +36,21 @@ def create_access_token(data: dict, expires_delta: timedelta | None = None):
     to_encode.update({"exp": expire})
     encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
     return {"access_token": encoded_jwt, "token_type": "bearer"}
+
+def create_user(email: str, password: str, db: Session):
+    existing_user = db.query(Usuario).filter(Usuario.email == email).first()
+    if existing_user:
+        raise ValueError("El email ya está registrado")
+        
+    hashed_password = get_password_hash(password)
+    
+    db_user = Usuario(
+        nombre=email.split('@')[0],
+        email=email,
+        password_hash=hashed_password,
+        estado="ACTIVO"
+    )
+    db.add(db_user)
+    db.commit()
+    db.refresh(db_user)
+    return db_user
