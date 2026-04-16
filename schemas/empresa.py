@@ -8,7 +8,7 @@ class EmpresaBase(BaseModel):
     estado: str = "ACTIVA"
 
 class EmpresaCreate(EmpresaBase):
-    pass
+    usuario_id: Optional[int] = None
 
 class EmpresaUpdate(BaseModel):
     nit: Optional[str] = None
